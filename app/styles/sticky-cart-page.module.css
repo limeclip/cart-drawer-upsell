@@ -1,0 +1,224 @@
+.iconGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+
+.iconOption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  background: #ffffff;
+  color: #000000;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease,
+    box-shadow 0.2s ease;
+  padding: 4px; /* добавить padding, чтобы иконки не прилипали */
+}
+
+.iconOption:hover {
+  border-color: rgba(0, 0, 0, 0.35);
+}
+
+.iconOptionSelected {
+  border-color: #000000;
+  background: #f5f5f5;
+  box-shadow: 0 0 0 1px #000000;
+}
+
+.iconGridDisabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.iconOption:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.iconGridDisabled .iconOption {
+  pointer-events: none;
+}
+
+[data-color-scheme="dark"] .iconOption {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: #1a1a1a;
+  color: #ffffff;
+}
+
+[data-color-scheme="dark"] .iconOptionSelected {
+  border-color: #ffffff;
+  background: #2a2a2a;
+  box-shadow: 0 0 0 1px #ffffff;
+}
+
+.stepper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stepperLabel {
+  font-size: 13px;
+  font-weight: 500;
+  color: #303030;
+}
+
+[data-color-scheme="dark"] .stepperLabel {
+  color: #e3e3e3;
+}
+
+.stepperControl {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stepperBtn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  background: #ffffff;
+  color: #000000;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.stepperBtn:hover {
+  border-color: #000000;
+  background: #f5f5f5;
+}
+
+.stepperBtn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+[data-color-scheme="dark"] .stepperBtn {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: #1a1a1a;
+  color: #ffffff;
+}
+
+.stepperValue {
+  min-width: 64px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: #000000;
+}
+
+[data-color-scheme="dark"] .stepperValue {
+  color: #ffffff;
+}
+
+.previewCard {
+  position: sticky;
+  top: 1rem;
+  width: 100%;
+}
+
+.previewFrame {
+  position: relative;
+  width: 100%;
+  min-height: 320px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  background: #f3f3f3;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+[data-color-scheme="dark"] .previewFrame {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: #2a2a2a;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.previewPageHint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.25);
+  font-size: 13px;
+  font-weight: 500;
+  pointer-events: none;
+  user-select: none;
+}
+
+[data-color-scheme="dark"] .previewPageHint {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.stickyButton {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  transition: width 0.2s ease, height 0.2s ease, border-radius 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.stickyCount {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.stickyCountCircle {
+  border-radius: 999px;
+}
+
+.stickyCountRectangle {
+  border-radius: 4px;
+}
+
+.stickyCountTopRight {
+  top: -6px;
+  right: -6px;
+}
+
+.stickyCountTopLeft {
+  top: -6px;
+  left: -6px;
+}
+
+.settingRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.settingRowLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: #303030;
+}
+
+[data-color-scheme="dark"] .settingRowLabel {
+  color: #e3e3e3;
+}

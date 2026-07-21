@@ -1,0 +1,445 @@
+.page {
+  --preview-border: rgba(0, 0, 0, 0.08);
+  --preview-muted: rgba(0, 0, 0, 0.55);
+  --preview-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+[data-color-scheme="dark"] .page {
+  --preview-border: rgba(255, 255, 255, 0.12);
+  --preview-muted: rgba(255, 255, 255, 0.6);
+  --preview-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.previewCard {
+  position: sticky;
+  top: 1rem;
+  width: 100%;
+  max-width: 100%;
+}
+
+.previewWidget {
+  width: 100%;
+  max-width: 100%;
+  border: 1px solid var(--preview-border);
+  border-radius: 16px;
+  box-shadow: var(--preview-shadow);
+  overflow: hidden;
+  transition: background-color 0.2s ease;
+}
+
+.previewHeader {
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--preview-border);
+}
+
+.previewTitle {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.previewBody {
+  padding: 16px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.previewItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--preview-muted);
+}
+
+.previewItemName {
+  font-weight: 500;
+  color: inherit;
+}
+
+.previewItemPrice {
+  font-variant-numeric: tabular-nums;
+}
+
+.previewTimer {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.04);
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+[data-color-scheme="dark"] .previewTimer {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.previewShipping {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.previewShippingText {
+  margin: 0;
+  font-size: 12px;
+  color: var(--preview-muted);
+  line-height: 1.4;
+}
+
+.previewShippingTextBold {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  color: #000000;
+  line-height: 1.4;
+}
+
+.previewShippingBarWrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.previewShippingBar {
+  flex: 1;
+  height: 8px;
+  border-radius: 999px;
+  background: #e0e0e0;
+  overflow: hidden;
+}
+
+[data-color-scheme="dark"] .previewShippingBar {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.previewShippingFill {
+  height: 100%;
+  border-radius: 999px;
+  background: #000;
+  transition: width 0.2s ease;
+}
+
+[data-color-scheme="dark"] .previewShippingFill {
+  background: #fff;
+}
+
+.previewDynamicDiscounts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.previewDynamicDiscountText {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  color: #000000;
+  line-height: 1.4;
+}
+
+.previewInput {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #000000;
+  background: #ffffff;
+}
+
+.previewDiscountCode {
+  display: flex;
+  gap: 8px;
+}
+
+.previewDiscountCodeInput {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #000000;
+  background: #ffffff;
+}
+
+.previewApplyBtn {
+  padding: 8px 12px;
+  border: 1px solid #000000;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #000000;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.previewDiscountRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #666666;
+  font-weight: 500;
+}
+
+.previewDiscountAmount {
+  font-weight: 600;
+  color: #000000;
+}
+
+.previewGiftWrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--preview-muted);
+}
+.previewGiftWrapText {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.previewButton {
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: default;
+  transition: background-color 0.2s ease;
+}
+
+.colorSwatch {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--preview-border);
+  border-radius: 8px;
+  padding: 0;
+  cursor: pointer;
+  background: none;
+}
+
+.planBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.trialDate {
+  font-size: 13px;
+  color: var(--preview-muted);
+  font-weight: 400;
+}
+
+.loadingWrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 240px;
+}
+
+.moduleCard {
+  padding: 16px 20px;
+  background: #ffffff;
+  color: #000000;
+}
+
+.moduleCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.moduleDragHandle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #888888;
+  cursor: grab;
+  touch-action: none;
+}
+
+.moduleDragHandle:active {
+  cursor: grabbing;
+}
+
+.moduleIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.moduleTitle {
+  flex: 1;
+  min-width: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #000000;
+}
+
+.moduleCardActions {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.moduleToggle {
+  position: relative;
+  width: 35px;
+  height: 20px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: #e0e0e0;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.moduleToggleOn {
+  background: #2a2a2a;
+}
+
+.moduleToggleKnob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+}
+
+.moduleToggleOn .moduleToggleKnob {
+  transform: translateX(16px);
+}
+
+.moduleToggleDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.colorSwatchDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.moduleSettings :global(.Polaris-TextField__Input:disabled),
+.moduleSettings :global(.Polaris-Select__Input:disabled),
+.moduleSettings :global(.Polaris-Button:disabled) {
+  cursor: not-allowed;
+}
+
+.moduleChevron {
+  flex-shrink: 0;
+  color: #888888;
+  transition: transform 0.2s ease-in-out;
+}
+
+.moduleChevronExpanded {
+  transform: rotate(180deg);
+}
+
+.moduleSettings {
+  padding-top: 16px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #000000;
+}
+
+.moduleSettings :global(.Polaris-Label__Text),
+.moduleSettings :global(.Polaris-Text--bodyMd) {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.appearanceCard {
+  padding: 16px 20px;
+  background: #ffffff;
+  color: #000000;
+}
+
+.appearanceTitle {
+  margin: 0 0 16px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #000000;
+}
+
+.plainActionButton {
+  border: none;
+  background: none;
+  padding: 0;
+  font-size: 14px;
+  color: #888888;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.plainActionButton:hover {
+  color: #000000;
+}
+
+.lockedBadge {
+  font-size: 12px;
+  color: #888888;
+  font-weight: 500;
+  margin-left: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.qtyBtn {
+  width: 24px;
+  height: 24px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background-color: transparent;
+  color: #666666;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: border-color 0.2s ease;
+}
+
+.qtyBtn:hover {
+  border-color: #333333;
+}
+.removeBtn {
+  border: none;
+  background: none;
+  color: #666666;
+  cursor: pointer;
+  padding: 2px;
+  line-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.removeBtn:hover {
+  color: #333333; /* или другой цвет */
+}

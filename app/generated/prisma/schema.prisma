@@ -1,0 +1,115 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+// Note that some adapters may set a maximum length for the String type by default, please ensure your strings are long
+// enough when changing adapters.
+// See https://www.prisma.io/docs/orm/reference/prisma-schema-reference#string for more information
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL") // пулер (порт 6543)
+  directUrl = env("DIRECT_URL") // прямое (порт 5432)
+}
+
+model Session {
+  id                  String    @id
+  shop                String
+  state               String
+  isOnline            Boolean   @default(false)
+  scope               String?
+  expires             DateTime?
+  accessToken         String
+  userId              BigInt?
+  firstName           String?
+  lastName            String?
+  email               String?
+  accountOwner        Boolean   @default(false)
+  locale              String?
+  collaborator        Boolean?  @default(false)
+  emailVerified       Boolean?  @default(false)
+  refreshToken        String?
+  refreshTokenExpires DateTime?
+}
+
+model ShopSubscription {
+  id          String        @id @default(cuid())
+  shop        String        @unique
+  planName    String        @default("starter")
+  orderLimit  Int           @default(99)
+  orderCount  Int           @default(0)
+  trialEndsAt DateTime?
+  isActive    Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  settings    CartSettings?
+}
+
+model CartSettings {
+  id                     String           @id @default(cuid())
+  shop                   String           @unique
+  backgroundColor        String           @default("#ffffff")
+  buttonColor            String           @default("#000000")
+  buttonTextKey          String           @default("checkout")
+  enableTimer            Boolean          @default(false)
+  timerMinutes           Int              @default(5)
+  enableFreeShippingBar  Boolean          @default(true)
+  freeShippingThreshold  Float            @default(50.0)
+  enableGiftWrap         Boolean          @default(false)
+  giftWrapPrice          Float            @default(5.0)
+  enableUpsell           Boolean          @default(false)
+  upsellProductIds       Json             @default("[]")
+  enableDynamicDiscounts Boolean          @default(false)
+  discountRules          Json             @default("[]")
+  modules                Json             @default("{}")
+  moduleOrder            Json             @default("[]")
+  subscription           ShopSubscription @relation(fields: [shop], references: [shop])
+  createdAt              DateTime         @default(now())
+  updatedAt              DateTime         @updatedAt
+
+  @@map("cart_settings")
+}
+
+model CartEvent {
+  id        String   @id @default(cuid())
+  shop      String
+  cartId    String
+  eventType String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([shop])
+  @@index([cartId])
+  @@index([eventType])
+}
+
+model UpsellEvent {
+  id           String   @id @default(cuid())
+  shop         String
+  productId    String
+  productTitle String
+  variantId    String
+  eventType    String
+  orderId      String?
+  createdAt    DateTime @default(now())
+
+  @@index([shop])
+  @@index([productId])
+  @@index([eventType])
+}
+
+model OrderEvent {
+  id         String   @id @default(cuid())
+  shop       String
+  orderId    String
+  totalPrice Float
+  currency   String
+  items      Json
+  createdAt  DateTime @default(now())
+
+  @@index([shop])
+  @@index([orderId])
+}

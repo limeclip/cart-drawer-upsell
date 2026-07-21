@@ -1,0 +1,132 @@
+.plansGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.planCard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 20px;
+}
+
+.planCardBody {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 16px;
+}
+
+.planPrice {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  color: #111111;
+}
+
+.planFeatures {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.planFeatureItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #202223;
+}
+
+.planFeatureBullet {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  margin-top: 6px;
+  border-radius: 50%;
+  background: #111111;
+}
+
+.planCardFooter {
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.currentPlanBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #f6f6f7;
+  border: 1px solid #e3e3e3;
+  font-size: 13px;
+  font-weight: 600;
+  color: #202223;
+}
+
+.faqItem {
+  border-top: 1px solid #e3e3e3;
+}
+
+.faqItem:first-child {
+  border-top: none;
+}
+
+.faqTrigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.faqTriggerText {
+  font-size: 14px;
+  font-weight: 600;
+  color: #202223;
+}
+
+.faqChevron {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+  color: #6d7175;
+}
+
+.faqChevronExpanded {
+  transform: rotate(180deg);
+}
+
+.faqContent {
+  padding: 0 0 16px;
+}
+
+.faqAnswer {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #6d7175;
+}
+
+.faqContact {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #6d7175;
+}
+
+@media (max-width: 1024px) {
+  .plansGrid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,136 @@
+.stickyCart {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  z-index: 2147483646;  /* было 2147483647 */
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease,
+    width 0.2s ease,
+    height 0.2s ease,
+    border-radius 0.2s ease,
+    background-color 0.2s ease;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.stickyCart:hover {
+  transform: scale(1.05);
+}
+
+.stickyCartVisible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.stickyCartHidden {
+  opacity: 0;
+  transform: scale(0.5);
+  pointer-events: none;
+}
+
+.stickyCartHidden:hover {
+  transform: scale(0.5);
+}
+
+.count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.countCircle {
+  border-radius: 999px;
+}
+
+.countRectangle {
+  border-radius: 4px;
+}
+
+@media (min-width: 768px) {
+  .stickyCart {
+    display: flex;
+  }
+
+  .posDesktopBottomRight {
+    bottom: 20px;
+    right: 20px;
+    top: auto;
+    left: auto;
+  }
+
+  .posDesktopBottomLeft {
+    bottom: 20px;
+    left: 20px;
+    top: auto;
+    right: auto;
+  }
+
+  .posDesktopTopRight {
+    top: 20px;
+    right: 20px;
+    bottom: auto;
+    left: auto;
+  }
+
+  .posDesktopTopLeft {
+    top: 20px;
+    left: 20px;
+    bottom: auto;
+    right: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .stickyCart {
+    display: none;
+  }
+
+  .showOnMobile {
+    display: flex;
+  }
+
+  .posMobileBottomRight {
+    bottom: 20px;
+    right: 20px;
+    top: auto;
+    left: auto;
+  }
+
+  .posMobileBottomLeft {
+    bottom: 20px;
+    left: 20px;
+    top: auto;
+    right: auto;
+  }
+
+  .posMobileTopRight {
+    top: 20px;
+    right: 20px;
+    bottom: auto;
+    left: auto;
+  }
+
+  .posMobileTopLeft {
+    top: 20px;
+    left: 20px;
+    bottom: auto;
+    right: auto;
+  }
+}
