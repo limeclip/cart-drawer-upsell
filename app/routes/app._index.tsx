@@ -1751,6 +1751,7 @@ export default function AppIndex() {
     () => [
       { label: t("horizontal"), value: "horizontal" },
       { label: t("carousel"), value: "carousel" },
+      { label: t("upsell_grid"), value: "grid" },
     ],
     [t],
   );
@@ -2508,6 +2509,7 @@ export default function AppIndex() {
         }
 
         const isCarousel = upsellSettings.layout === "carousel";
+        const isGrid = upsellSettings.layout === "grid";
         const safeCarouselIndex =
           productsToShow.length > 0
             ? upsellCarouselIndex % productsToShow.length
@@ -2627,7 +2629,84 @@ export default function AppIndex() {
                 {upsellSettings.title}
               </p>
             ) : null}
-            {isCarousel ? (
+            {isGrid ? (
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "12px",
+                  marginTop: "8px",
+                }}
+              >
+                {productsToShow.map((product) => (
+                  <div
+                    key={product.id}
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "6px",
+                      minWidth: 0,
+                    }}
+                  >
+                    {product.imageUrl ? (
+                      <img
+                        src={product.imageUrl}
+                        alt={product.title}
+                        style={{
+                          width: "100%",
+                          aspectRatio: "1/1",
+                          objectFit: "cover",
+                          borderRadius: "6px",
+                          border: "1px solid #e0e0e0",
+                        }}
+                      />
+                    ) : (
+                      <div
+                        style={{
+                          width: "100%",
+                          aspectRatio: "1/1",
+                          borderRadius: "6px",
+                          backgroundColor: "#e0e0e0",
+                        }}
+                      />
+                    )}
+                    <span
+                    className={styles.upsellTitleText}
+                      style={{
+                        fontWeight: 500,
+                        color: upsellSettings.textColor,
+                        fontSize: "13px",
+                      }}
+                    >
+                      {product.title}
+                    </span>
+                    <span
+                      style={{
+                        color: upsellSettings.text2Color,
+                        fontSize: "13px",
+                      }}
+                    >
+                      {formatMoney(product.price)}
+                    </span>
+                    <button
+                      type="button"
+                      style={{
+                        ...PREVIEW_STYLE.upsellAddBtn,
+                        backgroundColor: upsellSettings.buttonColor,
+                        color: upsellSettings.buttonTextColor,
+                        borderColor: upsellSettings.buttonTextColor,
+                        padding: "6px 12px",
+                        width: "100%",
+                        textAlign: "center",
+                      }}
+                      onClick={() => handleAddUpsellToCart(product)}
+                    >
+                      {upsellSettings.buttonText}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            ) : isCarousel ? (
               <>
                 <div
                   style={{

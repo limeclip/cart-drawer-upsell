@@ -298,6 +298,33 @@
   flex-wrap: wrap;
 }
 
+.upsellGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.upsellGridItem {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.upsellGridImage {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #f0f0f0;
+}
+
+.upsellGridItem .upsellAddBtn {
+  width: 100%;
+  text-align: center;
+  white-space: normal;
+}
+
 .upsellItem {
   display: flex;
   align-items: center;
@@ -325,6 +352,15 @@
 .upsellTitleLink {
   font-weight: 600;
   text-decoration: none;
+  display: -webkit-box;
+ line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
+  max-height: 3.2em; /* 2 строки × 1.6em (примерно) */
+  line-height: 1.6;
+  font-size: 14px;
 }
 
 .upsellTitleLink:hover {

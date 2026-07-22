@@ -1027,11 +1027,66 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
         }
 
         const isCarousel = upsellSettings.layout === "carousel";
+        const isGrid = upsellSettings.layout === "grid";
         const safeCarouselIndex =
           productsToShow.length > 0
             ? upsellCarouselIndex % productsToShow.length
             : 0;
         const currentProduct = productsToShow[safeCarouselIndex];
+
+        const renderUpsellGridProduct = (product: UpsellProduct) => {
+          const productUrl = getProductPageUrl(product.handle);
+
+          const imageNode = product.imageUrl ? (
+            <img
+              src={product.imageUrl}
+              alt={product.title}
+              className={styles.upsellGridImage}
+            />
+          ) : (
+            <div className={styles.upsellGridImage} />
+          );
+
+          return (
+            <div key={product.id} className={styles.upsellGridItem}>
+              {productUrl ? (
+                <a href={productUrl} className={styles.upsellImageLink}>
+                  {imageNode}
+                </a>
+              ) : (
+                imageNode
+              )}
+              {productUrl ? (
+                <a
+                  href={productUrl}
+                  className={styles.upsellTitleLink}
+                  style={{ color: upsellSettings.textColor }}
+                >
+                  {product.title}
+                </a>
+              ) : (
+                <span style={{ color: upsellSettings.textColor, fontWeight: 500 }}>
+                  {product.title}
+                </span>
+              )}
+              <span style={{ color: upsellSettings.text2Color }}>
+                {formatMoney(product.price, currencyCode)}
+              </span>
+              <button
+                type="button"
+                className={styles.upsellAddBtn}
+                style={{
+                  backgroundColor: upsellSettings.buttonColor,
+                  color: upsellSettings.buttonTextColor,
+                  borderColor: upsellSettings.buttonTextColor,
+                }}
+                onClick={() => handleAddUpsell(product)}
+              >
+                {upsellSettings.buttonText}
+              </button>
+            </div>
+          );
+        };
 
         const renderUpsellProduct = (product: UpsellProduct) => {
           const productUrl = getProductPageUrl(product.handle);
@@ -1120,7 +1175,13 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
                 {upsellSettings.title}
               </p>
             ) : null}
-            {isCarousel ? (
+            {isGrid ? (
+              <div className={styles.upsellGrid}>
+                {productsToShow.map((product) =>
+                  renderUpsellGridProduct(product),
+                )}
+              </div>
+            ) : isCarousel ? (
               <>
                 <div className={styles.upsellCarousel}>
                   {productsToShow.length > 1 ? (

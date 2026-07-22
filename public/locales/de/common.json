@@ -129,6 +129,8 @@
   "price_color": "Preisfarbe",
   "arrows_color": "Farbe der Navigationspfeile",
   "carousel": "Karussell",
+  "grid": "Raster",
+  "upsell_grid": "Raster (2 Spalten)",
   "previous": "Zurück",
   "next": "Weiter",
   "subtotal_format": "Zwischensummen-Format",

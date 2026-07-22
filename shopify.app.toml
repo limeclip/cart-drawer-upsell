@@ -12,20 +12,20 @@ automatically_update_urls_on_dev = true
 api_version = "2026-10"
 
   [[webhooks.subscriptions]]
-  uri = "/webhooks/app/uninstalled"
-  topics = [ "app/uninstalled" ]
-
-  [[webhooks.subscriptions]]
   uri = "/webhooks/app/scopes_update"
   topics = [ "app/scopes_update" ]
 
   [[webhooks.subscriptions]]
-  uri = "/webhooks/carts/create"
-  topics = [ "carts/create" ]
-
-  [[webhooks.subscriptions]]
   uri = "/webhooks/carts/update"
   topics = [ "carts/update" ]
+
+  [[webhooks.subscriptions]]
+  uri = "/webhooks/app/uninstalled"
+  topics = [ "app/uninstalled" ]
+
+  [[webhooks.subscriptions]]
+  uri = "/webhooks/carts/create"
+  topics = [ "carts/create" ]
 
   [[webhooks.subscriptions]]
   uri = "/webhooks/app/subscriptions/update"
@@ -34,8 +34,6 @@ api_version = "2026-10"
   [[webhooks.subscriptions]]
   uri = "/webhooks/orders/create"
   topics = [ "orders/create" ]
-
-
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes

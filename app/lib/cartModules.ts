@@ -27,7 +27,7 @@ export type ModuleEntry = {
   [key: string]: unknown;
 };
 
-export type UpsellLayout = "horizontal" | "carousel";
+export type UpsellLayout = "horizontal" | "carousel" | "grid";
 export type UpsellTitleAlign = "left" | "center" | "right";
 
 export type UpsellModuleEntry = ModuleEntry & {
@@ -58,8 +58,8 @@ export const DEFAULT_UPSELL_MODULE: UpsellModuleEntry = {
   titleColor: "#000000",
   titleFontSize: 14,
   buttonText: "Add",
-  buttonColor: "#ffffff",
-  buttonTextColor: "#000000",
+  buttonColor: "#000000",
+  buttonTextColor: "#ffffff",
   backgroundColor: "#f9f9f9",
   textColor: "#000000",
   text2Color: "#666666",
@@ -207,7 +207,7 @@ function parseUpsellProductIds(raw: unknown): string[] {
 }
 
 function parseUpsellLayout(raw: unknown, legacyStyle?: unknown): UpsellLayout {
-  if (raw === "horizontal" || raw === "carousel") {
+  if (raw === "horizontal" || raw === "carousel" || raw === "grid") {
     return raw;
   }
   if (legacyStyle === "carousel") {

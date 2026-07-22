@@ -129,6 +129,8 @@
   "price_color": "Price color",
   "arrows_color": "Navigation arrows color",
   "carousel": "Carousel",
+  "grid": "Grid",
+  "upsell_grid": "Grid (2 columns)",
   "previous": "Previous",
   "next": "Next",
   "subtotal_format": "Subtotal format",

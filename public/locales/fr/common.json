@@ -129,6 +129,8 @@
   "price_color": "Couleur du prix",
   "arrows_color": "Couleur des flèches de navigation",
   "carousel": "Carrousel",
+  "grid": "Grille",
+  "upsell_grid": "Grille (2 colonnes)",
   "previous": "Précédent",
   "next": "Suivant",
   "subtotal_format": "Format du sous-total",
