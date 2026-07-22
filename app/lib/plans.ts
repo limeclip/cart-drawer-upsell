@@ -14,21 +14,21 @@ export const PLANS: Plan[] = [
     name: "Starter",
     price: 9.99,
     ordersLimit: 99,
-    trialDays: 14,
+    trialDays: 7,
   },
   {
     id: "growth",
     name: "Growth",
     price: 14.99,
     ordersLimit: 199,
-    trialDays: 14,
+    trialDays: 7,
   },
   {
     id: "pro",
     name: "Pro",
     price: 24.99,
     ordersLimit: 499,
-    trialDays: 14,
+    trialDays: 7,
   },
 ];
 

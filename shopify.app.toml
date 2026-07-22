@@ -2,7 +2,7 @@
 
 client_id = "df4c9ce3812fa40cec77649b79100814"
 name = "Rootly Cart Drawer Upsell"
-application_url = "https://homepage-producing-nec-teacher.trycloudflare.com"
+application_url = "https://cart.rootly.cc"
 embedded = true
 
 [build]
@@ -43,7 +43,7 @@ scopes = "read_customers,read_metaobjects,read_orders,read_products,read_script_
 
 [auth]
 redirect_urls = [
-  "https://homepage-producing-nec-teacher.trycloudflare.com/api/auth"
+  "https://cart.rootly.cc/api/auth"
 ]
 
 [product.metafields.app.demo_info]

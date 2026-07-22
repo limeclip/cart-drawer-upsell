@@ -20,7 +20,7 @@ function createBillingPlan(
   amount: number,
 ): BillingConfigSubscriptionLineItemPlan {
   return {
-    trialDays: 14,
+    trialDays: 7,
     lineItems: [
       {
         amount,
