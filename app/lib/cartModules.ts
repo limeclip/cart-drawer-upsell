@@ -74,6 +74,7 @@ export type CartWidgetSettings = {
   modules: ModulesState;
   moduleOrder: ModuleId[];
   backgroundColor: string;
+  textColor: string;
   stickyCart: StickyCartSettings;
   isAllowed: boolean;
   planName: string;
@@ -109,6 +110,7 @@ export function createDefaultModules(): ModulesState {
       title: "My cart",
       showItemCount: true,
       backgroundColor: "#ffffff",
+      textColor: "#000000",
     },
     timer: {
       enabled: true,
@@ -162,6 +164,8 @@ export function createDefaultModules(): ModulesState {
       text: "checkout",
       textKey: "checkout",
       color: "#000000",
+      textColor: "#ffffff",
+      borderRadius: "4px",
     },
     footer: {
       enabled: false,
@@ -391,6 +395,10 @@ function migrateLegacyToModules(
         typeof data.backgroundColor === "string"
           ? data.backgroundColor
           : defaults.top_bar.backgroundColor,
+      textColor:
+        typeof data.textColor === "string"
+          ? data.textColor
+          : defaults.top_bar.textColor,
     },
     timer: {
       ...defaults.timer,
@@ -466,6 +474,7 @@ export function modulesToLegacyPayload(modules: ModulesState) {
 
   return {
     backgroundColor: String(topBar.backgroundColor ?? "#ffffff"),
+    textColor: String(topBar.textColor ?? "#000000"),
     buttonColor: String(checkout.color ?? "#000000"),
     buttonTextKey: textKey,
     enableTimer: Boolean(timer.enabled),
@@ -554,6 +563,7 @@ export function parseCartWidgetSettings(
     modules,
     moduleOrder,
     backgroundColor: String(topBar.backgroundColor ?? "#ffffff"),
+    textColor: String(data.textColor ?? topBar.textColor ?? "#000000"),
     stickyCart: parseStickyCart(savedModules?.sticky_cart),
     isAllowed: true,
     planName: "starter",

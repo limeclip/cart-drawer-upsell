@@ -31,6 +31,7 @@ function parseJsonRecord(raw: unknown): Record<string, unknown> {
 type SettingsInput = {
   reset?: boolean;
   backgroundColor?: string;
+  textColor?: string;
   buttonColor?: string;
   buttonTextKey?: string;
   enableTimer?: boolean;
@@ -50,6 +51,7 @@ type SettingsInput = {
 function parseSettingsBody(body: SettingsInput) {
   const data: {
     backgroundColor?: string;
+    textColor?: string;
     buttonColor?: string;
     buttonTextKey?: string;
     enableTimer?: boolean;
@@ -68,6 +70,9 @@ function parseSettingsBody(body: SettingsInput) {
 
   if (typeof body.backgroundColor === "string") {
     data.backgroundColor = body.backgroundColor;
+  }
+  if (typeof body.textColor === "string") {
+    data.textColor = body.textColor;
   }
   if (typeof body.buttonColor === "string") {
     data.buttonColor = body.buttonColor;

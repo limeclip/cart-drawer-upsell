@@ -35,6 +35,8 @@ import {
   StickyNote,
   Tag,
   Ticket,
+  Trash2Icon,
+  TrashIcon,
   Truck,
   type LucideIcon,
 } from "lucide-react";
@@ -192,6 +194,7 @@ function createDefaultModules(): ModulesState {
       title: "My cart",
       showItemCount: true,
       backgroundColor: "#ffffff",
+      textColor: "#000000",
     },
     timer: {
       enabled: false,
@@ -245,6 +248,8 @@ function createDefaultModules(): ModulesState {
       text: "checkout",
       textKey: "checkout",
       color: "#000000",
+      textColor: "#ffffff",
+      borderRadius: "4px",
     },
     footer: {
       enabled: false,
@@ -622,6 +627,10 @@ function migrateLegacyToModules(
         typeof data.backgroundColor === "string"
           ? data.backgroundColor
           : defaults.top_bar.backgroundColor,
+      textColor:
+        typeof data.textColor === "string"
+          ? data.textColor
+          : defaults.top_bar.textColor,
     },
     timer: {
       ...defaults.timer,
@@ -718,6 +727,7 @@ function modulesToLegacyPayload(modules: ModulesState) {
 
   return {
     backgroundColor: String(topBar.backgroundColor ?? "#ffffff"),
+    textColor: String(topBar.textColor ?? "#000000"),
     buttonColor: String(checkout.color ?? "#000000"),
     buttonTextKey: textKey,
     enableTimer: Boolean(timer.enabled),
@@ -937,28 +947,34 @@ function mapPickerProduct(product: {
   };
 }
 
-function TrashIcon() {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-    >
-      <path
-        d="M6 6V4.5C6 3.67157 6.67157 3 7.5 3H12.5C13.3284 3 14 3.67157 14 4.5V6M4 6H16M7 6V16.5C7 17.3284 7.67157 18 8.5 18H11.5C12.3284 18 13 17.3284 13 16.5V6"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
+// function TrashIcon() {
+//   return (
+//     <svg
+//       width="16"
+//       height="16"
+//       viewBox="0 0 20 20"
+//       fill="none"
+//       xmlns="http://www.w3.org/2000/svg"
+//       aria-hidden="true"
+//     >
+//       <path
+//         d="M6 6V4.5C6 3.67157 6.67157 3 7.5 3H12.5C13.3284 3 14 3.67157 14 4.5V6M4 6H16M7 6V16.5C7 17.3284 7.67157 18 8.5 18H11.5C12.3284 18 13 17.3284 13 16.5V6"
+//         stroke="currentColor"
+//         strokeWidth="1.5"
+//         strokeLinecap="round"
+//         strokeLinejoin="round"
+//       />
+//     </svg>
+//   );
+// }
 
-function TrustBadges({ badges }: { badges: string[] }) {
+function TrustBadges({
+  badges,
+  textColor,
+}: {
+  badges: string[];
+  textColor?: string;
+}) {
   const labelMap: Record<string, string> = {
     visa: "VISA",
     paypal: "PayPal",
@@ -976,7 +992,13 @@ function TrustBadges({ badges }: { badges: string[] }) {
       }}
     >
       {badges.map((badge) => (
-        <span key={badge} style={PREVIEW_STYLE.trustBadge}>
+        <span
+          key={badge}
+          style={{
+            ...PREVIEW_STYLE.trustBadge,
+            color: textColor ?? PREVIEW_STYLE.trustBadge.color,
+          }}
+        >
           {labelMap[badge] ?? badge.toUpperCase()}
         </span>
       ))}
@@ -1222,6 +1244,12 @@ export default function AppIndex() {
   const isDefaultSettings = useMemo(
     () => isCartSettingsDefault(modules, moduleOrder),
     [modules, moduleOrder],
+  );
+  const globalTextColor = String(modules.top_bar.textColor ?? "#000000");
+  const backgroundColor = modules.top_bar.backgroundColor ?? "#ffffff";
+  const previewTextStyle = useMemo(
+    () => ({ color: globalTextColor }),
+    [globalTextColor],
   );
 
   const updateModule = useCallback(
@@ -2246,6 +2274,22 @@ export default function AppIndex() {
                 updateModule("checkout_button", { color: value })
               }
             />
+            <ColorField
+              label={t("button_text_color")}
+              value={String(modules.checkout_button.textColor ?? "#ffffff")}
+              onChange={(value) =>
+                updateModule("checkout_button", { textColor: value })
+              }
+            />
+            <TextField
+              label={t("border_radius")}
+              value={String(modules.checkout_button.borderRadius ?? "4px")}
+              onChange={(value) =>
+                updateModule("checkout_button", { borderRadius: value })
+              }
+              placeholder="4px"
+              autoComplete="off"
+            />
           </>
         );
       case "footer":
@@ -2265,7 +2309,7 @@ export default function AppIndex() {
   const renderCartItemsPreview = () => {
     if (previewCartItems.length === 0) {
       return (
-        <p style={{ ...PREVIEW_STYLE.muted, margin: 0, fontSize: "13px" }}>
+        <p style={{ ...previewTextStyle, margin: 0, fontSize: "13px" }}>
           {t("no_products")}
         </p>
       );
@@ -2313,8 +2357,8 @@ export default function AppIndex() {
           gap: "2px",
         }}
       >
-        <span style={{ fontWeight: 500 }}>{item.title}</span>
-        <span style={PREVIEW_STYLE.muted}>
+        <span style={{ fontWeight: 500, color: globalTextColor }}>{item.title}</span>
+        <span style={{ color: globalTextColor }}>
           {formatMoney(item.price * item.quantity)}
         </span>
       </div>
@@ -2331,6 +2375,10 @@ export default function AppIndex() {
               className={styles.qtyBtn}
               onClick={() => handleUpdateCartQuantity(item.id, -1)}
               aria-label="-"
+              style={{
+                color: globalTextColor,
+                borderColor: "rgba(128, 128, 128, 0.5)", // всегда виден
+              }}
             >
               −
             </button>
@@ -2341,7 +2389,7 @@ export default function AppIndex() {
               textAlign: "center",
               fontSize: "12px",
               lineHeight: "24px",
-              color: "#000000",
+              color: globalTextColor,
             }}
           >
             {item.quantity}
@@ -2351,6 +2399,10 @@ export default function AppIndex() {
               className={styles.qtyBtn}
               onClick={() => handleUpdateCartQuantity(item.id, 1)}
               aria-label="+"
+              style={{
+                color: globalTextColor,
+                borderColor: "rgba(128, 128, 128, 0.5)", // всегда виден
+              }}
             >
               +
             </button>
@@ -2361,7 +2413,7 @@ export default function AppIndex() {
               onClick={() => handleRemoveFromCart(item.id)}
               aria-label={t("remove")}
             >
-              <TrashIcon />
+              <TrashIcon size={16} aria-hidden="true" style={{ color: globalTextColor }} />
             </button>
           </div>
         </div>
@@ -2386,9 +2438,11 @@ export default function AppIndex() {
           <div
             key={moduleId}
             className={styles.previewHeader}
-            style={{ borderColor: "#e0e0e0" }}
+            style={{
+              borderColor: "rgba(128, 128, 128, 0.5)", // всегда виден
+            }}
           >
-            <p className={styles.previewTitle} style={PREVIEW_STYLE.text}>
+            <p className={styles.previewTitle} style={previewTextStyle}>
               {title}
               {mod.showItemCount ? ` (${itemCount})` : ""}
             </p>
@@ -2406,7 +2460,7 @@ export default function AppIndex() {
             className={styles.previewTimer}
             style={{
               backgroundColor: String(mod.backgroundColor ?? "#f5f5f5"),
-              color: String(mod.textColor ?? "#000000"),
+              color: String(mod.textColor ?? globalTextColor),
             }}
           >
             {timerText || t("timer_remaining", { time: formatCountdown(timerSecondsLeft) })}
@@ -2423,7 +2477,12 @@ export default function AppIndex() {
           });
         return (
           <div key={moduleId} className={styles.previewShipping}>
-            <p className={styles.previewShippingTextBold}>{freeShippingText}</p>
+            <p
+              className={styles.previewShippingTextBold}
+              style={{ color: globalTextColor }}
+            >
+              {freeShippingText}
+            </p>
             <div className={styles.previewShippingBarWrap}>
               <div
                 className={styles.previewShippingBar}
@@ -2437,7 +2496,7 @@ export default function AppIndex() {
                   }}
                 />
               </div>
-              <Truck size={16} color="#888888" aria-hidden="true" />
+              <Truck size={16}  aria-hidden="true" style={{ color: globalTextColor }} />
             </div>
           </div>
         );
@@ -2455,9 +2514,14 @@ export default function AppIndex() {
 
         if (!nextRule) {
           return (
-            <p key={moduleId} className={styles.previewDynamicDiscountText}>
-              {t("all_discounts_applied")}
-            </p>
+            <></>
+            // <p
+            //   key={moduleId}
+            //   className={styles.previewDynamicDiscountText}
+            //   style={{ color: globalTextColor }}
+            // >
+            //   {t("all_discounts_applied")}
+            // </p>
           );
         }
 
@@ -2469,7 +2533,10 @@ export default function AppIndex() {
 
         return (
           <div key={moduleId} className={styles.previewDynamicDiscounts}>
-            <p className={styles.previewDynamicDiscountText}>
+            <p
+              className={styles.previewDynamicDiscountText}
+              style={{ color: globalTextColor }}
+            >
               {t("add_more_to_get", {
                 amount: remainingToNext.toFixed(0),
                 discount: getUpcomingDiscountLabel(nextRule, t),
@@ -2575,7 +2642,7 @@ export default function AppIndex() {
               type="button"
               style={{
                 padding: "4px 10px",
-                border: `1px solid ${upsellSettings.buttonTextColor}`,
+                border: `1px solid ${upsellSettings.buttonColor}`,
                 borderRadius: "6px",
                 backgroundColor: upsellSettings.buttonColor,
                 color: upsellSettings.buttonTextColor,
@@ -2694,7 +2761,7 @@ export default function AppIndex() {
                         ...PREVIEW_STYLE.upsellAddBtn,
                         backgroundColor: upsellSettings.buttonColor,
                         color: upsellSettings.buttonTextColor,
-                        borderColor: upsellSettings.buttonTextColor,
+                        borderColor: upsellSettings.buttonColor,
                         padding: "6px 12px",
                         width: "100%",
                         textAlign: "center",
@@ -2795,6 +2862,7 @@ export default function AppIndex() {
         return (
           <TrustBadges
             key={moduleId}
+            textColor={globalTextColor}
             badges={
               Array.isArray(mod.badges)
                 ? (mod.badges as string[])
@@ -2807,10 +2875,10 @@ export default function AppIndex() {
           <div
             key={moduleId}
             className={styles.previewGiftWrap}
-            style={PREVIEW_STYLE.muted}
+            style={{ color: globalTextColor }}
           >
             <div className={styles.previewGiftWrapText}>
-              <GiftIcon size={16} color="#888888" aria-hidden="true" />
+              <GiftIcon size={16}  aria-hidden="true" style={{ color: globalTextColor }} />
               <span>{String(mod.text ?? t("gift_wrap"))}</span>
             </div>
             <span>{formatMoney(Number(mod.price ?? 5))}</span>
@@ -2827,6 +2895,11 @@ export default function AppIndex() {
               mod.placeholder ?? t("order_notes_placeholder"),
             )}
             className={styles.previewInput}
+            style={{
+              color: globalTextColor,
+              backgroundColor: "transparent",
+              borderColor: "rgba(128, 128, 128, 0.5)",
+            }}
           />
         );
       case "discount_code":
@@ -2838,6 +2911,7 @@ export default function AppIndex() {
               onChange={(event) => setDiscountCode(event.target.value)}
               placeholder={String(mod.placeholder ?? "")}
               className={styles.previewDiscountCodeInput}
+              style={{ color: globalTextColor }}
             />
             <button
               type="button"
@@ -2861,7 +2935,10 @@ export default function AppIndex() {
         return (
           <Fragment key={moduleId}>
             {hasDynamicDiscount && (
-              <div className={styles.previewDiscountRow}>
+              <div
+                className={styles.previewDiscountRow}
+                style={{ color: globalTextColor }}
+              >
                 <span>{getAppliedDiscountLabel(appliedRule, t)}</span>
                 {discountAmount > 0 && (
                   <span className={styles.previewDiscountAmount}>
@@ -2871,7 +2948,10 @@ export default function AppIndex() {
               </div>
             )}
             {hasCouponDiscount && (
-              <div className={styles.previewDiscountRow}>
+              <div
+                className={styles.previewDiscountRow}
+                style={{ color: globalTextColor }}
+              >
                 <span>
                   {t("coupon")}: {appliedCouponCode}
                 </span>
@@ -2900,6 +2980,8 @@ export default function AppIndex() {
               fontWeight: 600,
               paddingTop: "4px",
               borderTop: "1px solid #e0e0e0",
+              borderColor: "rgba(128, 128, 128, 0.5)",
+              color: globalTextColor,
             }}
           >
             <span>{subtotalText.split(":")[0] || t("subtotal")}</span>
@@ -2919,7 +3001,9 @@ export default function AppIndex() {
             className={styles.previewButton}
             style={{
               backgroundColor: String(mod.color ?? "#000000"),
-              color: "#ffffff",
+              color: String(mod.textColor ?? "#ffffff"),
+              borderRadius: String(mod.borderRadius ?? "4px"),
+              border: "none",
             }}
           >
             {t(checkoutTextKey)}
@@ -2934,7 +3018,7 @@ export default function AppIndex() {
           <p
             key={moduleId}
             style={{
-              ...PREVIEW_STYLE.muted,
+              ...previewTextStyle,
               margin: 0,
               fontSize: "11px",
               textAlign: "center",
@@ -3131,6 +3215,13 @@ export default function AppIndex() {
                         updateModule("top_bar", { backgroundColor: value })
                       }
                     />
+                    <ColorField
+                      label={t("text_color")}
+                      value={String(modules.top_bar.textColor ?? "#000000")}
+                      onChange={(value) =>
+                        updateModule("top_bar", { textColor: value })
+                      }
+                    />
                   </div>
                 </Card>
 
@@ -3219,7 +3310,7 @@ export default function AppIndex() {
                           backgroundColor: String(
                             modules.top_bar.backgroundColor ?? "#ffffff",
                           ),
-                          ...PREVIEW_STYLE.text,
+                          color: globalTextColor,
                         }}
                       >
                         <div className={styles.previewBody}>

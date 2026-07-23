@@ -45,6 +45,7 @@ model CartSettings {
   id                     String           @id @default(cuid())
   shop                   String           @unique
   backgroundColor        String           @default("#ffffff")
+  textColor              String           @default("#000000")
   buttonColor            String           @default("#000000")
   buttonTextKey          String           @default("checkout")
   enableTimer            Boolean          @default(false)

@@ -7,7 +7,7 @@ import {
   useState,
   type FormEvent,
 } from "react";
-import { ChevronLeft, ChevronRight, GiftIcon, Truck } from "lucide-react";
+import { ChevronLeft, ChevronRight, GiftIcon, Truck, X } from "lucide-react";
 
 import {
   applyFirstDiscount,
@@ -149,7 +149,13 @@ function TrashIcon() {
   );
 }
 
-function TrustBadges({ badges }: { badges: string[] }) {
+function TrustBadges({
+  badges,
+  textColor,
+}: {
+  badges: string[];
+  textColor: string;
+}) {
   const labelMap: Record<string, string> = {
     visa: "VISA",
     paypal: "PayPal",
@@ -159,7 +165,11 @@ function TrustBadges({ badges }: { badges: string[] }) {
   return (
     <div className={styles.trustBadges}>
       {badges.map((badge) => (
-        <span key={badge} className={styles.trustBadge}>
+        <span
+          key={badge}
+          className={styles.trustBadge}
+          style={{ color: textColor }}
+        >
           {labelMap[badge] ?? badge.toUpperCase()}
         </span>
       ))}
@@ -168,7 +178,15 @@ function TrustBadges({ badges }: { badges: string[] }) {
 }
 
 function CartDrawerInner({ shop, settings }: CartDrawerProps) {
-  const { modules, moduleOrder, backgroundColor, isAllowed = true } = settings;
+  const {
+    modules,
+    moduleOrder,
+    backgroundColor,
+    textColor,
+    isAllowed = true,
+  } = settings;
+  const globalTextColor =
+    textColor ?? String(modules.top_bar.textColor ?? "#000000");
   const paidFeaturesAllowed = isAllowed;
   const [open, setOpen] = useState(false);
   const [cart, setCart] = useState<ThemeCart | null>(null);
@@ -310,7 +328,7 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
               }, 150);
             }
           })
-          .catch(() => {});
+          .catch(() => { });
       }
 
       return promise;
@@ -795,11 +813,11 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
 
   const renderCartLines = () => {
     if (isLoading && cartItems.length === 0) {
-      return <p className={styles.emptyCart}>Loading cart...</p>;
+      return <p className={styles.emptyCart} style={{ color: globalTextColor }}>Loading cart...</p>;
     }
 
     if (cartItems.length === 0) {
-      return <p className={styles.emptyCart}>Your cart is empty</p>;
+      return <p className={styles.emptyCart} style={{ color: globalTextColor }}>Your cart is empty</p>;
     }
 
     return cartItems.map((item) => {
@@ -831,12 +849,16 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
           <div className={styles.lineDetails}>
             {productUrl ? (
               <a href={productUrl} className={styles.lineTitleLink}>
-                <p className={styles.lineTitle}>{item.title}</p>
+                <p className={styles.lineTitle} style={{ color: globalTextColor }}>
+                  {item.title}
+                </p>
               </a>
             ) : (
-              <p className={styles.lineTitle}>{item.title}</p>
+              <p className={styles.lineTitle} style={{ color: globalTextColor }}>
+                {item.title}
+              </p>
             )}
-            <p className={styles.linePrice}>
+            <p className={styles.linePrice} style={{ color: globalTextColor }}>
               {formatMoney(unitPrice, currencyCode)}
             </p>
             <div className={styles.qtyRow}>
@@ -861,7 +883,9 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
               >
                 −
               </button>
-              <span className={styles.qtyValue}>{quantity}</span>
+              <span className={styles.qtyValue} style={{ color: globalTextColor }}>
+                {quantity}
+              </span>
               <button
                 type="button"
                 className={styles.qtyBtn}
@@ -886,6 +910,7 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
                   });
                 }}
                 aria-label="Remove item"
+                style={{ color: globalTextColor }}
               >
                 <TrashIcon />
               </button>
@@ -910,8 +935,8 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
       case "top_bar": {
         const title = String(mod.title ?? "My cart");
         return (
-          <div key={moduleId} className={styles.header}>
-            <h2 className={styles.title}>
+          <div key={moduleId} className={styles.header} style={{ borderColor: "rgba(128, 128, 128, 0.5)" }}>
+            <h2 className={styles.title} style={{ color: globalTextColor }}>
               {title}
               {mod.showItemCount ? ` (${itemCount})` : ""}
             </h2>
@@ -933,7 +958,7 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
             className={styles.timer}
             style={{
               backgroundColor: String(mod.backgroundColor ?? "#f5f5f5"),
-              color: String(mod.textColor ?? "#000000"),
+              color: String(mod.textColor ?? globalTextColor),
             }}
           >
             {timerText ||
@@ -949,7 +974,9 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
           `You are ${remainingAmount} away from free shipping!`;
         return (
           <div key={moduleId} className={styles.shipping}>
-            <p className={styles.shippingText}>{freeShippingText}</p>
+            <p className={styles.shippingText} style={{ color: globalTextColor }}>
+              {freeShippingText}
+            </p>
             <div className={styles.progressRow}>
               <div className={styles.progressTrack}>
                 <div
@@ -964,6 +991,7 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
                 size={16}
                 className={styles.progressIcon}
                 aria-hidden="true"
+                style={{ color: globalTextColor }}
               />
             </div>
           </div>
@@ -979,7 +1007,11 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
         const nextRule = getNextDiscountRule(cartSubtotal, discountRules);
         if (!nextRule) {
           return (
-            <p key={moduleId} className={styles.dynamicDiscountText}>
+            <p
+              key={moduleId}
+              className={styles.dynamicDiscountText}
+              style={{ color: globalTextColor }}
+            >
               {/* All available discounts applied */}
             </p>
           );
@@ -994,7 +1026,7 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
 
         return (
           <div key={moduleId} className={styles.dynamicDiscount}>
-            <p className={styles.dynamicDiscountText}>
+            <p className={styles.dynamicDiscountText} style={{ color: globalTextColor }}>
               Add {formatMoney(remainingToNext, currencyCode)} more to get{" "}
               {discountLabel}
             </p>
@@ -1078,7 +1110,7 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
                 style={{
                   backgroundColor: upsellSettings.buttonColor,
                   color: upsellSettings.buttonTextColor,
-                  borderColor: upsellSettings.buttonTextColor,
+                  borderColor: upsellSettings.buttonColor,
                 }}
                 onClick={() => handleAddUpsell(product)}
               >
@@ -1134,7 +1166,6 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
                 style={{
                   backgroundColor: upsellSettings.buttonColor,
                   color: upsellSettings.buttonTextColor,
-                  borderColor: upsellSettings.buttonTextColor,
                 }}
                 onClick={() => handleAddUpsell(product)}
               >
@@ -1235,6 +1266,7 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
         return (
           <TrustBadges
             key={moduleId}
+            textColor={globalTextColor}
             badges={
               Array.isArray(mod.badges)
                 ? (mod.badges as string[])
@@ -1252,10 +1284,14 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
                 onChange={(event) => handleGiftWrapChange(event.target.checked)}
                 className={styles.giftWrapCheckbox}
               />
-              <GiftIcon size={16} color="#888888" aria-hidden="true" />
-              <span>{String(mod.text ?? "Gift Wrap")} </span>
+              <GiftIcon size={16}  aria-hidden="true" style={{ color: globalTextColor }} />
+              <span style={{ color: globalTextColor }}>
+                {String(mod.text ?? "Gift Wrap")}{" "}
+              </span>
             </label>
-            <span>{formatMoney(Number(mod.price ?? 5), currencyCode)}</span>
+            <span style={{ color: globalTextColor }}>
+              {formatMoney(Number(mod.price ?? 5), currencyCode)}
+            </span>
           </div>
         );
       case "order_notes":
@@ -1270,6 +1306,11 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
             onBlur={handleNoteBlur}
             placeholder={String(mod.placeholder ?? "Add special instructions")}
             className={styles.input}
+            style={{
+              color: globalTextColor,
+              backgroundColor: backgroundColor,
+              borderColor: "rgba(128, 128, 128, 0.5)", // всегда виден
+            }}
           />
         );
       case "discount_code":
@@ -1286,6 +1327,7 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
               onChange={(event) => setDiscountCode(event.target.value)}
               placeholder={String(mod.placeholder ?? "Discount code")}
               className={`${styles.input} ${styles.discountInput}`}
+              style={{ color: globalTextColor }}
             />
             <button type="submit" className={styles.applyBtn}>
               Apply
@@ -1303,20 +1345,24 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
         return (
           <Fragment key={moduleId}>
             {hasDynamicDiscount && (
-              <div className={styles.discountLine}>
+              <div className={styles.discountLine} style={{ color: globalTextColor }}>
                 <span>{getAppliedDiscountLabel(appliedRule!)}</span>
                 {discountAmount > 0 && (
-                  <span className={styles.discountAmount}>
+                  <span className={styles.discountAmount} style={{ color: globalTextColor }}>
                     − {formatMoney(discountAmount, currencyCode)}
                   </span>
                 )}
               </div>
             )}
             {appliedDiscounts.map((entry, index) => (
-              <div key={`${entry.title ?? "discount"}-${index}`} className={styles.discountLine}>
+              <div
+                key={`${entry.title ?? "discount"}-${index}`}
+                className={styles.discountLine}
+                style={{ color: globalTextColor }}
+              >
                 <span>{entry.title ?? "Discount"}</span>
                 {entry.total_allocated_amount ? (
-                  <span className={styles.discountAmount}>
+                  <span className={styles.discountAmount} style={{ color: globalTextColor }}>
                     − {formatMoney(centsToAmount(entry.total_allocated_amount), currencyCode)}
                   </span>
                 ) : null}
@@ -1331,7 +1377,7 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
         const subtotalText = format.replace("{{amount}}", amountText);
         const [label] = subtotalText.split(":");
         return (
-          <div key={moduleId} className={styles.subtotal}>
+          <div key={moduleId} className={styles.subtotal} style={{ color: globalTextColor, borderColor: "rgba(128, 128, 128, 0.5)" }}>
             <span>{label?.trim() || "Subtotal"}</span>
             <span>{formatMoney(subtotalWithGiftWrap, currencyCode)}</span>
           </div>
@@ -1344,7 +1390,12 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
             key={moduleId}
             type="button"
             className={styles.checkoutBtn}
-            style={{ backgroundColor: String(mod.color ?? "#000000") }}
+            style={{
+              backgroundColor: String(mod.color ?? "#000000"),
+              color: String(mod.textColor ?? "#ffffff"),
+              borderRadius: String(mod.borderRadius ?? "4px"),
+              border: "none",
+            }}
             onClick={handleCheckout}
             disabled={itemCount === 0}
           >
@@ -1358,7 +1409,7 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
           return null;
         }
         return (
-          <p key={moduleId} className={styles.footer}>
+          <p key={moduleId} className={styles.footer} style={{ color: globalTextColor }}>
             {footerText}
           </p>
         );
@@ -1388,7 +1439,7 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
       />
       <aside
         className={`${styles.drawer} ${open ? styles.drawerOpen : ""}`}
-        style={{ backgroundColor }}
+        style={{ backgroundColor, color: globalTextColor }}
         role="dialog"
         aria-modal="true"
         aria-label="Shopping cart"
@@ -1399,14 +1450,7 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
           onClick={handleClose}
           aria-label="Close cart"
         >
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <path
-              d="M4 4L14 14M14 4L4 14"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-          </svg>
+         <X size={16} color={globalTextColor} />
         </button>
 
         <div className={styles.content}>

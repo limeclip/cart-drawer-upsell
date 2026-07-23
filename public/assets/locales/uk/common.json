@@ -6,6 +6,7 @@
   "button_text": "Текст кнопки",
   "background_color": "Колір фону",
   "button_color": "Колір кнопки",
+  "text_color": "Колір тексту",
   "timer": "Таймер терміновості",
   "enable_timer": "Увімкнути таймер",
   "timer_minutes": "Хвилини таймера",

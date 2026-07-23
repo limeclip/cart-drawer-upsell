@@ -124,6 +124,7 @@
   "title_font_size": "Tamaño de fuente del título (px)",
   "upsell_button_settings": "Botón",
   "button_text_color": "Color del texto del botón",
+  "border_radius": "Radio del borde",
   "upsell_styles": "Estilos",
   "product_name_color": "Color del nombre del producto",
   "price_color": "Color del precio",

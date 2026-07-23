@@ -146,11 +146,11 @@
 .previewInput {
   width: 100%;
   padding: 8px 10px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid transparent;
   border-radius: 6px;
   font-size: 12px;
-  color: #000000;
-  background: #ffffff;
+  background: transparent;
+  color: inherit;
 }
 
 .previewDiscountCode {
@@ -189,7 +189,7 @@
 
 .previewDiscountAmount {
   font-weight: 600;
-  color: #000000;
+  color: currentColor;
 }
 
 .previewGiftWrap {
