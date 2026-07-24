@@ -6,40 +6,19 @@ import { normalizeShopDomain } from "./storefront.shared";
 export async function loadCartWidgetSettings(shop: string) {
   const normalizedShop = normalizeShopDomain(shop);
 
-  let record = await prisma.cartSettings.findUnique({
+  const record = await prisma.cartSettings.upsert({
     where: {
       shop: normalizedShop,
     },
+
+    create: {
+      shop: normalizedShop,
+    },
+
+    update: {},
+
   });
 
-  if (!record) {
-    try {
-      record = await prisma.cartSettings.create({
-        data: {
-          subscription: {
-            connectOrCreate: {
-              where: {
-                shop: normalizedShop,
-              },
-              create: {
-                shop: normalizedShop,
-              },
-            },
-          },
-        },
-      });
-    } catch (error) {
-      record = await prisma.cartSettings.findUnique({
-        where: {
-          shop: normalizedShop,
-        },
-      });
-
-      if (!record) {
-        throw error;
-      }
-    }
-  }
 
   const limitCheck = await checkOrderLimit(normalizedShop);
 
@@ -47,8 +26,10 @@ export async function loadCartWidgetSettings(shop: string) {
     record as unknown as Record<string, unknown>,
   );
 
+
   return {
     shop: normalizedShop,
+
     settings: {
       ...settings,
       isAllowed: limitCheck.isAllowed,

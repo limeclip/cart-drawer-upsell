@@ -145,15 +145,30 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
     if (!settings) {
       try {
+
+        await prisma.shopSubscription.upsert({
+          where: {
+            shop,
+          },
+          update: {},
+          create: {
+            shop,
+          },
+        });
+
+
         settings = await prisma.cartSettings.create({
           data: {
-            subscription: subscriptionConnectOrCreate(shop),
+            shop,
           },
           include: {
             subscription: true,
           },
         });
+
+
       } catch {
+
         settings = await prisma.cartSettings.findUnique({
           where: {
             shop,
@@ -163,9 +178,11 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
           },
         });
 
+
         if (!settings) {
           throw new Error("Failed to create cart settings");
         }
+
       }
     }
 
