@@ -134,16 +134,40 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     const { session } = await authenticate.admin(request);
     const shop = session.shop;
 
-    const settings = await prisma.cartSettings.upsert({
-      where: { shop },
-      create: {
-        subscription: subscriptionConnectOrCreate(shop),
+    let settings = await prisma.cartSettings.findUnique({
+      where: {
+        shop,
       },
-      update: {},
       include: {
         subscription: true,
       },
     });
+
+    if (!settings) {
+      try {
+        settings = await prisma.cartSettings.create({
+          data: {
+            subscription: subscriptionConnectOrCreate(shop),
+          },
+          include: {
+            subscription: true,
+          },
+        });
+      } catch {
+        settings = await prisma.cartSettings.findUnique({
+          where: {
+            shop,
+          },
+          include: {
+            subscription: true,
+          },
+        });
+
+        if (!settings) {
+          throw new Error("Failed to create cart settings");
+        }
+      }
+    }
 
     return Response.json(settings);
   } catch (error) {
