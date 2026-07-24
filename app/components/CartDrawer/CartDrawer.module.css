@@ -353,6 +353,7 @@
   text-overflow: ellipsis;
   word-break: break-word;
   max-height: 3.2em; /* 2 строки × 1.6em (примерно) */
+  height: 3.2em;
   line-height: 1.6;
   font-size: 14px;
 }
