@@ -1,7 +1,6 @@
 import type { LoaderFunctionArgs } from "react-router";
 
 import { loadCartWidgetSettings } from "../lib/cartWidgetSettings.server";
-import { getStorefrontToken } from "../lib/storefront.server";
 import { normalizeShopDomain } from "../lib/storefront.shared";
 
 function corsHeaders(): HeadersInit {
@@ -30,10 +29,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   const shop = normalizeShopDomain(shopParam);
   const { settings } = await loadCartWidgetSettings(shop);
-  const storefrontToken = getStorefrontToken();
 
-  return Response.json(
-    { settings, shop, storefrontToken },
-    { headers: corsHeaders() },
-  );
+  return Response.json({ settings, shop }, { headers: corsHeaders() });
 };

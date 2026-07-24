@@ -3058,31 +3058,8 @@ export default function AppIndex() {
   }
 
   return (
-    <div className={styles.page} style={{ position: "relative", maxWidth: '1300px', margin: '0 auto', padding: '0 20px', bottom: "16px", paddingBottom: "16px" }}>
-      {/* <div
-        style={{
-          position: "absolute",
-          top: "24px",
-          right: "124px",
-          zIndex: 10,
-        }}
-      >
-        <Select
-          label=""
-          labelHidden
-          options={[
-            { label: "English", value: "en" },
-            { label: "Español", value: "es" },
-            { label: "Français", value: "fr" },
-            { label: "Deutsch", value: "de" },
-            { label: "Italiano", value: "it" },
-            { label: "Українська", value: "uk" },
-          ]}
-          value={i18n.language}
-          onChange={(value) => changeLanguage(value)}
-          style={{ width: "120px" }}
-        />
-      </div> */}
+    <div className={styles.page} style={{ position: "relative", maxWidth: '1300px', margin: '0 auto', padding: '0 20px', bottom: "16px", paddingBottom: "16px", paddingTop: "16px" }}>
+
       <Page
         fullWidth
         title={t("settings_title")}

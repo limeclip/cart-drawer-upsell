@@ -8,8 +8,6 @@ import { StickyCart } from "../components/StickyCart";
 
 import type { CartWidgetSettings } from "../lib/cartModules";
 
-import { setStorefrontToken } from "../lib/cartWidgetConfig";
-
 import {
   installCartClickInterceptor,
   installGlobalCartChangeNotifier,
@@ -130,8 +128,6 @@ async function loadWidgetConfig(appOrigin: string, shop: string) {
     settings: CartWidgetSettings;
 
     shop: string;
-
-    storefrontToken?: string;
 
   }>;
 
@@ -309,20 +305,13 @@ async function bootstrap() {
 
     const config = await loadWidgetConfig(appOrigin, shop);
 
-
-
-    if (config.storefrontToken) {
-
-      setStorefrontToken(config.storefrontToken);
-
-    }
-
-
-
     const drawerRoot: Root = createRoot(drawerRootElement);
-
     drawerRoot.render(
-      <CartDrawer shop={config.shop || shop} settings={config.settings} />,
+      <CartDrawer
+        shop={config.shop || shop}
+        appOrigin={appOrigin}
+        settings={config.settings}
+      />,
     );
 
     startThemeCartDialogInterception();

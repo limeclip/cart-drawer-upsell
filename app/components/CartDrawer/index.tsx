@@ -23,7 +23,6 @@ import {
   type ModuleId,
 } from "../../lib/cartModules";
 import { trackAnalyticsEvent } from "../../lib/analyticsEvents";
-import { getStorefrontToken } from "../../lib/cartWidgetConfig";
 import {
   addItem,
   applyDiscount,
@@ -34,10 +33,6 @@ import {
   updateNote,
   type ThemeCart,
 } from "../../lib/storefrontWidget";
-import {
-  normalizeShopDomain,
-  STOREFRONT_API_VERSION,
-} from "../../lib/storefront.shared";
 import {
   setOurCartDrawerOpen,
   startThemeCartDialogInterception,
@@ -58,43 +53,9 @@ type UpsellProduct = {
 
 type CartDrawerProps = {
   shop: string;
+  appOrigin: string;
   settings: CartWidgetSettings;
 };
-
-const UPSELL_PRODUCTS_QUERY = `#graphql
-  query UpsellProducts($ids: [ID!]!) {
-    nodes(ids: $ids) {
-      ... on Product {
-        id
-        title
-        handle
-        featuredImage {
-          url
-        }
-        variants(first: 1) {
-          nodes {
-            id
-            price {
-              amount
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-function parseAmount(value: string | undefined): number {
-  const parsed = Number.parseFloat(value ?? "0");
-  return Number.isFinite(parsed) ? parsed : 0;
-}
-
-function toProductGid(id: string): string {
-  if (id.startsWith("gid://")) {
-    return id;
-  }
-  return `gid://shopify/Product/${id}`;
-}
 
 function variantIdFromGid(gid: string): number {
   const match = gid.match(/ProductVariant\/(\d+)/);
@@ -114,18 +75,6 @@ function getProductPageUrl(handle?: string): string | null {
     return null;
   }
   return `/products/${handle}`;
-}
-
-function getStorefrontApiUrl(shop: string): string {
-  const domain = normalizeShopDomain(shop);
-  return `https://${domain}/api/${STOREFRONT_API_VERSION}/graphql.json`;
-}
-
-function getStorefrontHeaders(token: string): Record<string, string> {
-  return {
-    "Content-Type": "application/json",
-    "X-Shopify-Storefront-Access-Token": token,
-  };
 }
 
 function TrashIcon() {
@@ -177,7 +126,7 @@ function TrustBadges({
   );
 }
 
-function CartDrawerInner({ shop, settings }: CartDrawerProps) {
+function CartDrawerInner({ shop, appOrigin, settings }: CartDrawerProps) {
   const {
     modules,
     moduleOrder,
@@ -638,71 +587,38 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
     if (
       !paidFeaturesAllowed ||
       !modules.upsell.enabled ||
-      upsellProductIds.length === 0
+      upsellProductIds.length === 0 ||
+      !appOrigin
     ) {
       setUpsellProducts([]);
       return;
     }
 
-    const storefrontToken = getStorefrontToken();
-    if (!storefrontToken) {
-      setUpsellProducts([]);
-      return;
-    }
-
     let cancelled = false;
-    const normalizedIds = upsellProductIds.map(toProductGid);
+    const productIdsQuery = upsellProductIds
+      .map((id) => encodeURIComponent(id))
+      .join(",");
 
     async function loadUpsellProducts() {
       try {
-        const response = await fetch(getStorefrontApiUrl(shop), {
-          method: "POST",
-          headers: getStorefrontHeaders(storefrontToken),
-          body: JSON.stringify({
-            query: UPSELL_PRODUCTS_QUERY,
-            variables: { ids: normalizedIds },
-          }),
-        });
+        const response = await fetch(
+          `${appOrigin}/api/upsell-products?shop=${encodeURIComponent(shop)}&productIds=${productIdsQuery}`,
+          { credentials: "omit" },
+        );
 
         if (!response.ok) {
           return;
         }
 
         const payload = (await response.json()) as {
-          data?: {
-            nodes?: Array<{
-              id?: string;
-              title?: string;
-              handle?: string;
-              featuredImage?: { url?: string } | null;
-              variants?: {
-                nodes?: Array<{
-                  id?: string;
-                  price?: { amount?: string };
-                }>;
-              };
-            } | null>;
-          };
+          products?: UpsellProduct[];
         };
 
         if (cancelled) {
           return;
         }
 
-        const products =
-          payload.data?.nodes
-            ?.filter((node): node is NonNullable<typeof node> => Boolean(node?.id))
-            .map((node) => ({
-              id: node.id!,
-              title: node.title ?? node.id!,
-              handle: node.handle ?? "",
-              imageUrl: node.featuredImage?.url ?? null,
-              price: parseAmount(node.variants?.nodes?.[0]?.price?.amount),
-              variantId: node.variants?.nodes?.[0]?.id ?? "",
-            }))
-            .filter((product) => Boolean(product.variantId)) ?? [];
-
-        setUpsellProducts(products);
+        setUpsellProducts(payload.products ?? []);
       } catch {
         if (!cancelled) {
           setUpsellProducts([]);
@@ -715,7 +631,13 @@ function CartDrawerInner({ shop, settings }: CartDrawerProps) {
     return () => {
       cancelled = true;
     };
-  }, [modules.upsell.enabled, shop, upsellProductIds, paidFeaturesAllowed]);
+  }, [
+    appOrigin,
+    modules.upsell.enabled,
+    shop,
+    upsellProductIds,
+    paidFeaturesAllowed,
+  ]);
 
   const handleNoteBlur = useCallback(() => {
     if (orderNotes !== (cart?.note ?? "")) {
